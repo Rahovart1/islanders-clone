@@ -25,14 +25,22 @@ public class PlaceHandler : MonoBehaviour
         Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         
-        if (Physics.Raycast(ray, out hit, 100f, _placeableLayer))
+        if (Physics.Raycast(ray, out hit, 100f))
         {
-            _objMeshRenderer.material = _canPlaceableMaterial;
+            if (hit.collider.gameObject.layer == 6)
+            {
+                _objMeshRenderer.material = _canPlaceableMaterial;
+            }
+            else
+            {
+                _objMeshRenderer.material = _cantPlaceableMaterial;
+            }    
             _obj.transform.position = hit.point;
         }
-        else
-        {
-            _objMeshRenderer.material = _cantPlaceableMaterial;
-        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
     }
 }
