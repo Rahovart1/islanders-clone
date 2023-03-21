@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    #region Private Variables
     private Inputs inputs;
-    private CameraController cameraController;
-    private Vector2 mouseDelta;
-    private Vector2 scrollDelta;
-    private bool _isLeftPressed = false;
-    private bool _isRightPressed = false;
-    private Vector2 _tempLeftButtonDelta;
-    private float _tempRightButtonDelta;
+    #endregion
+
+    #region Public Variables
+    public Vector2 MouseDelta { get; private set; }
+    public Vector2 ScrollDelta { get; private set; }
+    public bool IsLeftPressed { get; private set; }
+    public bool IsRightPressed { get; private set; }
+
+    #endregion
     private void Start()
     {
-        cameraController = GetComponent<CameraController>();    
+
     }
     private void Update()
     {
-        MouseInputHandle();
+
     }
     private void OnEnable()
     {
@@ -26,26 +29,18 @@ public class InputManager : MonoBehaviour
         {
             inputs = new Inputs();
 
-            inputs.Camera.Delta.performed += ctx => mouseDelta = ctx.ReadValue<Vector2>();
-            inputs.Camera.Scroll.performed += ctx => scrollDelta = ctx.ReadValue<Vector2>();
+            inputs.Camera.Delta.performed += ctx => MouseDelta = ctx.ReadValue<Vector2>();
+            inputs.Camera.Scroll.performed += ctx => ScrollDelta = ctx.ReadValue<Vector2>();
 
-            inputs.Camera.LeftButton.started += ctx => _isLeftPressed = true;
-            inputs.Camera.LeftButton.canceled += ctx => _isLeftPressed = false;
-            inputs.Camera.RightButton.started += ctx => _isRightPressed = true;
-            inputs.Camera.RightButton.canceled += ctx => _isRightPressed = false;
-
+            inputs.Camera.LeftButton.started += _ => IsLeftPressed = true;
+            inputs.Camera.LeftButton.canceled += _ => IsLeftPressed = false;
+            inputs.Camera.RightButton.started += _ => IsRightPressed = true;
+            inputs.Camera.RightButton.canceled += _ => IsRightPressed = false;
         }   
         inputs.Enable();
     }
     private void OnDisable()
     {
         inputs.Disable();
-    }
-    private void MouseInputHandle()
-    {
-        _tempLeftButtonDelta = _isLeftPressed ? mouseDelta : Vector2.zero;
-        _tempRightButtonDelta = _isRightPressed ? mouseDelta.x : 0;
-
-        cameraController.ReceiveInputs(_tempLeftButtonDelta, _tempRightButtonDelta, scrollDelta.y);
     }
 }
