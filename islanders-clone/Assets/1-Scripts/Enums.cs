@@ -5,6 +5,12 @@ public enum GameState
     PauseMenu,
     GameOver
 }
+
+public enum InGameState
+{
+    Normal,
+    Place
+}
 public enum PlaceableLayer
 {
     grass,

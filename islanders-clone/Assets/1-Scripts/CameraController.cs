@@ -67,10 +67,14 @@ public class CameraController : MonoBehaviour
     }
     private void HeightHandle()
     {
-        _targetHeight = _targetHeight - new Vector3(0f, _heightDelta, -_heightDelta) * _heightSensivity;
-        _targetHeight.y = Mathf.Clamp(_targetHeight.y, _heightMinDistance, _heightMaxDistance);
-        _targetHeight.z = -_targetHeight.y;
-        _cam.localPosition = Vector3.Lerp(_cam.localPosition, _targetHeight, Time.deltaTime * _smoothTime);
+        if (GameManager.Instance.CurrentInGameState == InGameState.Normal)
+        {
+            _targetHeight = _targetHeight - new Vector3(0f, _heightDelta, -_heightDelta) * _heightSensivity;
+            _targetHeight.y = Mathf.Clamp(_targetHeight.y, _heightMinDistance, _heightMaxDistance);
+            _targetHeight.z = -_targetHeight.y;
+            _cam.localPosition = Vector3.Lerp(_cam.localPosition, _targetHeight, Time.deltaTime * _smoothTime);
+        }    
+
     }
     private void InputHandle()
     {
